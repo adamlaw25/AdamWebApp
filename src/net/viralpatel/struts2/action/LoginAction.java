@@ -26,13 +26,10 @@ public class LoginAction extends ActionSupport {
 
         try {
            String URL = "jdbc:mysql://localhost/Person";
+        		//String URL = "jdbc:mysql://173.91.115.247:3306/Person";
            Class.forName("com.mysql.jdbc.Driver");
            conn = DriverManager.getConnection(URL, "root", "root");
-           if(conn != null) {
-        	   	System.out.println(conn.getCatalog());
-           }
            for(data.Person person: user.getPersons()) {
-        	   	System.out.println(person.getId());
         	   	  String sql = "INSERT INTO Person.Person (id, last_name, first_name, email, created, modified, archived, creted_by, modified_by, archived_by)\r\n";
               sql += "VALUES (?, ?, ?, ?, ?, ?, ?, 'admin', ?, ?) ";
               sql += "ON DUPLICATE KEY UPDATE " +
@@ -46,8 +43,7 @@ public class LoginAction extends ActionSupport {
                ps.setString(4, person.getEmail());
                
                //Calendar calendar = Calendar.getInstance();
-               Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());;
-               System.out.println(currentTimestamp);
+               Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
                
                ps.setTimestamp(5, currentTimestamp);
                ps.setNull(6, Types.TIMESTAMP);
@@ -62,7 +58,6 @@ public class LoginAction extends ActionSupport {
                ps.setTimestamp(13, currentTimestamp);
                ps.setTimestamp(14, currentTimestamp);
                
-               System.out.println(ps);
                
                ps.executeUpdate();
                ps.close();
